@@ -12,7 +12,21 @@ type action =
   | Reveal;
 
 let cellClass =
-  Css.style([Css.width(Css.px(50)), Css.height(Css.px(50))]);
+  Css.style([
+    Css.width(Css.px(50)),
+    Css.height(Css.px(50)),
+    Css.important(Css.margin(Css.px(3))),
+  ]);
+
+let cellPaper =
+  Css.style([
+    Css.height(Css.pct(100.0)),
+    Css.width(Css.pct(100.0)),
+    Css.justifyContent(`center),
+    Css.alignItems(`center),
+    Css.display(Css.flexBox),
+    Css.important(Css.backgroundColor(Css.hex("fcfcfc"))),
+  ]);
 
 let component = ReasonReact.reducerComponent("Cell");
 
@@ -24,7 +38,17 @@ let make = _children => {
     | Reveal => ReasonReact.Update({...state, isRevealed: true})
     },
   render: _self =>
-    <MaterialUi.Grid item=true className=cellClass>
-      <div> {"Cell" |> ReasonReact.string} </div>
-    </MaterialUi.Grid>,
+    MaterialUi.(
+      <Grid item=true className=cellClass>
+        <Paper className=cellPaper elevation={`Int(1)} square=true>
+          {
+            switch (Random.int(2)) {
+            | 0 => "" |> ReasonReact.string
+            | 1 => <MaterialUIIcons.Alarm />
+            | _ => ReasonReact.null
+            }
+          }
+        </Paper>
+      </Grid>
+    ),
 };
