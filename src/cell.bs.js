@@ -5,21 +5,13 @@ var Css = require("bs-css/src/Css.js");
 var Block = require("bs-platform/lib/js/block.js");
 var React = require("react");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var MaterialUi_Grid = require("@jsiebern/bs-material-ui/src/MaterialUi_Grid.bs.js");
 
 var cellClass = Css.style(/* :: */[
-      Css.width(Css.px(30)),
+      Css.width(Css.px(50)),
       /* :: */[
-        Css.height(Css.px(30)),
-        /* :: */[
-          Css.display(/* inlineBlock */-147785676),
-          /* :: */[
-            Css.border(Css.px(1), /* solid */12956715, Css.black),
-            /* :: */[
-              Css.borderCollapse(/* collapse */-996847251),
-              /* [] */0
-            ]
-          ]
-        ]
+        Css.height(Css.px(50)),
+        /* [] */0
       ]
     ]);
 
@@ -37,9 +29,7 @@ function make() {
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
           /* render */(function () {
-              return React.createElement("div", {
-                          className: cellClass
-                        }, "Cell");
+              return ReasonReact.element(undefined, undefined, MaterialUi_Grid.make(undefined, undefined, cellClass, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, /* array */[React.createElement("div", undefined, "Cell")]));
             }),
           /* initialState */(function () {
               return /* record */[

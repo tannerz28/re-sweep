@@ -12,13 +12,7 @@ type action =
   | Reveal;
 
 let cellClass =
-  Css.style([
-    Css.width(Css.px(30)),
-    Css.height(Css.px(30)),
-    Css.display(`inlineBlock),
-    Css.border(Css.px(1), `solid, Css.black),
-    Css.borderCollapse(`collapse),
-  ]);
+  Css.style([Css.width(Css.px(50)), Css.height(Css.px(50))]);
 
 let component = ReasonReact.reducerComponent("Cell");
 
@@ -30,5 +24,7 @@ let make = _children => {
     | Reveal => ReasonReact.Update({...state, isRevealed: true})
     },
   render: _self =>
-    <div className=cellClass> {"Cell" |> ReasonReact.string} </div>,
+    <MaterialUi.Grid item=true className=cellClass>
+      <div> {"Cell" |> ReasonReact.string} </div>
+    </MaterialUi.Grid>,
 };

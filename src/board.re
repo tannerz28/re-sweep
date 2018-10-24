@@ -14,8 +14,6 @@ type state = {
 type action =
   | Start;
 
-
-
 let component = ReasonReact.reducerComponent("Board");
 
 let make = (~width: int, ~height: int, ~mines: int, _children) => {
@@ -36,15 +34,19 @@ let make = (~width: int, ~height: int, ~mines: int, _children) => {
         rows;
     let createBoard = () => createRow([], 0);
 
-    <div>
+    <MaterialUi.Grid container=true xs=V12 justify=`Center>
       ...{
            Array.of_list(
              List.map(
-               rowCols => <div> ...{Array.of_list(rowCols)} </div>,
+               rowCols =>
+                 <MaterialUi.Grid
+                   item=true container=true xs=V12 justify=`Center>
+                   ...{Array.of_list(rowCols)}
+                 </MaterialUi.Grid>,
                createBoard(),
              ),
            )
          }
-    </div>;
+    </MaterialUi.Grid>;
   },
 };

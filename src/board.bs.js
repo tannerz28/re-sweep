@@ -4,8 +4,8 @@
 var List = require("bs-platform/lib/js/list.js");
 var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
-var ReactDOMRe = require("reason-react/src/ReactDOMRe.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
+var MaterialUi_Grid = require("@jsiebern/bs-material-ui/src/MaterialUi_Grid.bs.js");
 var Cell$ReactTemplate = require("./cell.bs.js");
 
 var component = ReasonReact.reducerComponent("Board");
@@ -56,9 +56,9 @@ function make(width, height, mines, _) {
                   }
                 };
               };
-              return ReactDOMRe.createElementVariadic("div", undefined, $$Array.of_list(List.map((function (rowCols) {
-                                    return ReactDOMRe.createElementVariadic("div", undefined, $$Array.of_list(rowCols));
-                                  }), createRow(/* [] */0, 0))));
+              return ReasonReact.element(undefined, undefined, MaterialUi_Grid.make(undefined, undefined, undefined, undefined, true, undefined, undefined, /* Center */980392437, undefined, undefined, undefined, undefined, undefined, undefined, /* V12 */11, undefined, undefined, undefined, $$Array.of_list(List.map((function (rowCols) {
+                                        return ReasonReact.element(undefined, undefined, MaterialUi_Grid.make(undefined, undefined, undefined, undefined, true, undefined, true, /* Center */980392437, undefined, undefined, undefined, undefined, undefined, undefined, /* V12 */11, undefined, undefined, undefined, $$Array.of_list(rowCols)));
+                                      }), createRow(/* [] */0, 0)))));
             }),
           /* initialState */(function () {
               return /* record */[
