@@ -4,14 +4,16 @@ type cellContent =
   | NeighborCount;
 
 type state = {
-  isBomb: bool,
+  isMine: bool,
   isRevealed: bool,
   isFlagged: bool,
+  neighborCount: option(int),
 };
 
 type action =
   | Reveal
-  | ToggleFlag;
+  | ToggleFlag
+  | UpdateNeighborCount(int);
 
 let cellClass =
   Css.style([
@@ -35,12 +37,29 @@ let cellButton =
 
 let component = ReasonReact.reducerComponent("Cell");
 
-let make = _children => {
+let make = (~onReveal: bool => option(int), ~isMine: bool, _children) => {
   ...component,
-  initialState: () => {isBomb: false, isRevealed: false, isFlagged: false},
+  initialState: () => {
+    isMine,
+    isRevealed: false,
+    isFlagged: false,
+    neighborCount: None,
+  },
   reducer: (action, state) =>
     switch (action) {
-    | Reveal => ReasonReact.Update({...state, isRevealed: true})
+    | Reveal =>
+      ReasonReact.UpdateWithSideEffects(
+        {...state, isRevealed: true},
+        (
+          self =>
+            switch (onReveal(self.state.isMine)) {
+            | Some(int) => self.send(UpdateNeighborCount(int))
+            | None => ()
+            }
+        ),
+      )
+    | UpdateNeighborCount(count) =>
+      ReasonReact.Update({...state, neighborCount: Some(count)})
     | ToggleFlag =>
       ReasonReact.Update({...state, isFlagged: !state.isFlagged})
     },
@@ -52,20 +71,18 @@ let make = _children => {
             self.state.isRevealed ?
               {
                 Random.self_init();
-                switch (Random.int(4)) {
-                | 0 => {js|💣|js} |> ReasonReact.string
-                | _ => "" |> ReasonReact.string
-                };
+                self.state.isMine ?
+                  {js|💣|js} |> ReasonReact.string :
+                  (
+                    switch (self.state.neighborCount) {
+                    | Some(int) => string_of_int(int) |> ReasonReact.string
+                    | None => "" |> ReasonReact.string
+                    }
+                  );
               } :
               <button
                 className=cellButton
-                onClick={
-                  _e =>
-                    switch (self.state.isBomb) {
-                    | false => self.send(Reveal)
-                    | true => self.send(Reveal)
-                    }
-                }
+                onClick={_e => self.send(Reveal)}
                 onContextMenu={
                   e => {
                     ReactEvent.Mouse.preventDefault(e);

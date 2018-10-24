@@ -51,7 +51,7 @@ var cellButton = Css.style(/* :: */[
 
 var component = ReasonReact.reducerComponent("Cell");
 
-function make() {
+function make(onReveal, isMine, _) {
   return /* record */[
           /* debugName */component[/* debugName */0],
           /* reactClassInternal */component[/* reactClassInternal */1],
@@ -67,10 +67,15 @@ function make() {
               var tmp;
               if (match) {
                 Random.self_init(/* () */0);
-                var match$1 = Random.$$int(4);
-                tmp = match$1 !== 0 ? "" : "💣";
+                var match$1 = self[/* state */1][/* isMine */0];
+                if (match$1) {
+                  tmp = "💣";
+                } else {
+                  var match$2 = self[/* state */1][/* neighborCount */3];
+                  tmp = match$2 !== undefined ? String(match$2) : "";
+                }
               } else {
-                var match$2 = self[/* state */1][/* isFlagged */2];
+                var match$3 = self[/* state */1][/* isFlagged */2];
                 tmp = React.createElement("button", {
                       className: cellButton,
                       onClick: (function () {
@@ -80,7 +85,7 @@ function make() {
                           e.preventDefault();
                           return Curry._1(self[/* send */3], /* ToggleFlag */1);
                         })
-                    }, match$2 ? "🚩" : "");
+                    }, match$3 ? "🚩" : "");
               }
               return ReasonReact.element(undefined, undefined, MaterialUi_Grid.make(undefined, undefined, cellClass, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, /* array */[ReasonReact.element(undefined, undefined, MaterialUi_Paper.make(cellPaper, undefined, /* `Int */[
                                         3654863,
@@ -89,24 +94,46 @@ function make() {
             }),
           /* initialState */(function () {
               return /* record */[
-                      /* isBomb */false,
+                      /* isMine */isMine,
                       /* isRevealed */false,
-                      /* isFlagged */false
+                      /* isFlagged */false,
+                      /* neighborCount */undefined
                     ];
             }),
           /* retainedProps */component[/* retainedProps */11],
           /* reducer */(function (action, state) {
-              if (action) {
-                return /* Update */Block.__(0, [/* record */[
-                            /* isBomb */state[/* isBomb */0],
-                            /* isRevealed */state[/* isRevealed */1],
-                            /* isFlagged */!state[/* isFlagged */2]
-                          ]]);
+              if (typeof action === "number") {
+                if (action !== 0) {
+                  return /* Update */Block.__(0, [/* record */[
+                              /* isMine */state[/* isMine */0],
+                              /* isRevealed */state[/* isRevealed */1],
+                              /* isFlagged */!state[/* isFlagged */2],
+                              /* neighborCount */state[/* neighborCount */3]
+                            ]]);
+                } else {
+                  return /* UpdateWithSideEffects */Block.__(2, [
+                            /* record */[
+                              /* isMine */state[/* isMine */0],
+                              /* isRevealed */true,
+                              /* isFlagged */state[/* isFlagged */2],
+                              /* neighborCount */state[/* neighborCount */3]
+                            ],
+                            (function (self) {
+                                var match = Curry._1(onReveal, self[/* state */1][/* isMine */0]);
+                                if (match !== undefined) {
+                                  return Curry._1(self[/* send */3], /* UpdateNeighborCount */[match]);
+                                } else {
+                                  return /* () */0;
+                                }
+                              })
+                          ]);
+                }
               } else {
                 return /* Update */Block.__(0, [/* record */[
-                            /* isBomb */state[/* isBomb */0],
-                            /* isRevealed */true,
-                            /* isFlagged */state[/* isFlagged */2]
+                            /* isMine */state[/* isMine */0],
+                            /* isRevealed */state[/* isRevealed */1],
+                            /* isFlagged */state[/* isFlagged */2],
+                            /* neighborCount */action[0]
                           ]]);
               }
             }),

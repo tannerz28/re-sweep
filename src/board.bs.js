@@ -4,6 +4,9 @@
 var List = require("bs-platform/lib/js/list.js");
 var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
+var Curry = require("bs-platform/lib/js/curry.js");
+var Random = require("bs-platform/lib/js/random.js");
+var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
 var MaterialUi_Grid = require("@jsiebern/bs-material-ui/src/MaterialUi_Grid.bs.js");
 var Cell$ReactTemplate = require("./cell.bs.js");
@@ -22,7 +25,55 @@ function make(width, height, mines, _) {
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
           /* render */(function (self) {
-              var createColumn = function (_columns, _colIndex) {
+              var generateMineCoords = function (coordsList) {
+                while(true) {
+                  var row = Random.$$int(self[/* state */1][/* width */1]);
+                  var col = Random.$$int(self[/* state */1][/* height */2]);
+                  var match = List.exists((function(row,col){
+                      return function (pair) {
+                        return Caml_obj.caml_equal(pair, /* array */[
+                                    row,
+                                    col
+                                  ]);
+                      }
+                      }(row,col)), coordsList);
+                  if (match) {
+                    continue ;
+                  } else {
+                    return /* array */[
+                            row,
+                            col
+                          ];
+                  }
+                };
+              };
+              var generateRandomMineCoordsList = function (_randomMineCoordList, _currentMineCount, maxMineCount) {
+                while(true) {
+                  var currentMineCount = _currentMineCount;
+                  var randomMineCoordList = _randomMineCoordList;
+                  var match = currentMineCount < maxMineCount;
+                  if (match) {
+                    _currentMineCount = currentMineCount + 1 | 0;
+                    _randomMineCoordList = List.append(randomMineCoordList, /* :: */[
+                          generateMineCoords(randomMineCoordList),
+                          /* [] */0
+                        ]);
+                    continue ;
+                  } else {
+                    return randomMineCoordList;
+                  }
+                };
+              };
+              var generatedMineCoords = generateRandomMineCoordsList(/* [] */0, 0, self[/* state */1][/* mines */3]);
+              var onCellReveal = function (isBomb) {
+                if (isBomb) {
+                  Curry._1(self[/* send */3], /* UpdateGameState */[/* Lost */2]);
+                  return undefined;
+                } else {
+                  return Random.$$int(6);
+                }
+              };
+              var createColumn = function (_columns, _colIndex, rowIndex) {
                 while(true) {
                   var colIndex = _colIndex;
                   var columns = _columns;
@@ -30,7 +81,14 @@ function make(width, height, mines, _) {
                   if (match) {
                     _colIndex = colIndex + 1 | 0;
                     _columns = List.append(columns, /* :: */[
-                          ReasonReact.element(undefined, undefined, Cell$ReactTemplate.make(/* array */[])),
+                          ReasonReact.element(undefined, undefined, Cell$ReactTemplate.make(onCellReveal, List.exists((function(colIndex){
+                                      return function (coord) {
+                                        return Caml_obj.caml_equal(coord, /* array */[
+                                                    rowIndex,
+                                                    colIndex
+                                                  ]);
+                                      }
+                                      }(colIndex)), generatedMineCoords), /* array */[])),
                           /* [] */0
                         ]);
                     continue ;
@@ -47,7 +105,7 @@ function make(width, height, mines, _) {
                   if (match) {
                     _rowIndex = rowIndex + 1 | 0;
                     _rows = List.append(rows, /* :: */[
-                          createColumn(/* [] */0, 0),
+                          createColumn(/* [] */0, 0, rowIndex),
                           /* [] */0
                         ]);
                     continue ;
@@ -69,9 +127,9 @@ function make(width, height, mines, _) {
                     ];
             }),
           /* retainedProps */component[/* retainedProps */11],
-          /* reducer */(function (_, state) {
+          /* reducer */(function (action, state) {
               return /* Update */Block.__(0, [/* record */[
-                          /* gameState : Playing */0,
+                          /* gameState */action[0],
                           /* width */state[/* width */1],
                           /* height */state[/* height */2],
                           /* mines */state[/* mines */3]
