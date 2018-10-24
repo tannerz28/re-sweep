@@ -10,6 +10,11 @@ var Board$ReactTemplate = require("./board.bs.js");
 
 var component = ReasonReact.statelessComponent("Game");
 
+Css.$$global("body", /* :: */[
+      Css.backgroundColor(Css.hex("fafafa")),
+      /* [] */0
+    ]);
+
 var mainClass = Css.style(/* :: */[
       Css.display(Css.flexBox),
       /* :: */[

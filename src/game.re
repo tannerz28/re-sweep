@@ -1,5 +1,7 @@
 let component = ReasonReact.statelessComponent("Game");
 
+Css.global("body", [Css.backgroundColor(Css.hex("fafafa"))]);
+
 let mainClass =
   Css.style([Css.display(Css.flexBox), Css.justifyContent(`center)]);
 
