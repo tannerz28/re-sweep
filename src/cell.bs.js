@@ -3,9 +3,10 @@
 
 var Css = require("bs-css/src/Css.js");
 var Block = require("bs-platform/lib/js/block.js");
+var Curry = require("bs-platform/lib/js/curry.js");
+var React = require("react");
 var Random = require("bs-platform/lib/js/random.js");
 var ReasonReact = require("reason-react/src/ReasonReact.js");
-var MaterialUIIcons = require("bs-material-ui-icons/src/MaterialUIIcons.js");
 var MaterialUi_Grid = require("@jsiebern/bs-material-ui/src/MaterialUi_Grid.bs.js");
 var MaterialUi_Paper = require("@jsiebern/bs-material-ui/src/MaterialUi_Paper.bs.js");
 
@@ -40,6 +41,14 @@ var cellPaper = Css.style(/* :: */[
       ]
     ]);
 
+var cellButton = Css.style(/* :: */[
+      Css.width(Css.pct(100.0)),
+      /* :: */[
+        Css.height(Css.pct(100.0)),
+        /* [] */0
+      ]
+    ]);
+
 var component = ReasonReact.reducerComponent("Cell");
 
 function make() {
@@ -53,26 +62,53 @@ function make() {
           /* willUnmount */component[/* willUnmount */6],
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
-          /* render */(function () {
-              Random.self_init(/* () */0);
-              var match = Random.$$int(4);
+          /* render */(function (self) {
+              var match = self[/* state */1][/* isRevealed */1];
+              var tmp;
+              if (match) {
+                Random.self_init(/* () */0);
+                var match$1 = Random.$$int(4);
+                tmp = match$1 !== 0 ? "" : "💣";
+              } else {
+                var match$2 = self[/* state */1][/* isFlagged */2];
+                tmp = React.createElement("button", {
+                      className: cellButton,
+                      onClick: (function () {
+                          return Curry._1(self[/* send */3], /* Reveal */0);
+                        }),
+                      onContextMenu: (function (e) {
+                          e.preventDefault();
+                          return Curry._1(self[/* send */3], /* ToggleFlag */1);
+                        })
+                    }, match$2 ? "🚩" : "");
+              }
               return ReasonReact.element(undefined, undefined, MaterialUi_Grid.make(undefined, undefined, cellClass, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, /* array */[ReasonReact.element(undefined, undefined, MaterialUi_Paper.make(cellPaper, undefined, /* `Int */[
                                         3654863,
                                         1
-                                      ], true, undefined, undefined, /* array */[match !== 0 ? "" : ReasonReact.element(undefined, undefined, MaterialUIIcons.Alarm[/* make */0](/* array */[]))]))]));
+                                      ], true, undefined, undefined, /* array */[tmp]))]));
             }),
           /* initialState */(function () {
               return /* record */[
                       /* isBomb */false,
-                      /* isRevealed */false
+                      /* isRevealed */false,
+                      /* isFlagged */false
                     ];
             }),
           /* retainedProps */component[/* retainedProps */11],
-          /* reducer */(function (_, state) {
-              return /* Update */Block.__(0, [/* record */[
-                          /* isBomb */state[/* isBomb */0],
-                          /* isRevealed */true
-                        ]]);
+          /* reducer */(function (action, state) {
+              if (action) {
+                return /* Update */Block.__(0, [/* record */[
+                            /* isBomb */state[/* isBomb */0],
+                            /* isRevealed */state[/* isRevealed */1],
+                            /* isFlagged */!state[/* isFlagged */2]
+                          ]]);
+              } else {
+                return /* Update */Block.__(0, [/* record */[
+                            /* isBomb */state[/* isBomb */0],
+                            /* isRevealed */true,
+                            /* isFlagged */state[/* isFlagged */2]
+                          ]]);
+              }
             }),
           /* jsElementWrapped */component[/* jsElementWrapped */13]
         ];
@@ -80,6 +116,7 @@ function make() {
 
 exports.cellClass = cellClass;
 exports.cellPaper = cellPaper;
+exports.cellButton = cellButton;
 exports.component = component;
 exports.make = make;
 /* cellClass Not a pure module */
