@@ -27,6 +27,7 @@ function make(width, height, mines, _) {
           /* render */(function (self) {
               var generateMineCoords = function (coordsList) {
                 while(true) {
+                  Random.self_init(/* () */0);
                   var row = Random.$$int(self[/* state */1][/* width */1]);
                   var col = Random.$$int(self[/* state */1][/* height */2]);
                   var match = List.exists((function(row,col){

@@ -26,6 +26,7 @@ let make = (~width: int, ~height: int, ~mines: int, _children) => {
     },
   render: self => {
     let rec generateMineCoords = coordsList => {
+      Random.self_init();
       let row = Random.int(self.state.width);
       let col = Random.int(self.state.height);
 
