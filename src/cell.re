@@ -42,11 +42,11 @@ let make = _children => {
       <Grid item=true className=cellClass>
         <Paper className=cellPaper elevation={`Int(1)} square=true>
           {
-            switch (Random.int(2)) {
-            | 0 => "" |> ReasonReact.string
-            | 1 => <MaterialUIIcons.Alarm />
-            | _ => ReasonReact.null
-            }
+            Random.self_init();
+            switch (Random.int(4)) {
+            | 0 => <MaterialUIIcons.Alarm />
+            | _ => "" |> ReasonReact.string
+            };
           }
         </Paper>
       </Grid>

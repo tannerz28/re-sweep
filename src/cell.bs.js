@@ -54,13 +54,12 @@ function make() {
           /* willUpdate */component[/* willUpdate */7],
           /* shouldUpdate */component[/* shouldUpdate */8],
           /* render */(function () {
-              var match = Random.$$int(2);
+              Random.self_init(/* () */0);
+              var match = Random.$$int(4);
               return ReasonReact.element(undefined, undefined, MaterialUi_Grid.make(undefined, undefined, cellClass, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, /* array */[ReasonReact.element(undefined, undefined, MaterialUi_Paper.make(cellPaper, undefined, /* `Int */[
                                         3654863,
                                         1
-                                      ], true, undefined, undefined, /* array */[match !== 0 ? (
-                                            match !== 1 ? null : ReasonReact.element(undefined, undefined, MaterialUIIcons.Alarm[/* make */0](/* array */[]))
-                                          ) : ""]))]));
+                                      ], true, undefined, undefined, /* array */[match !== 0 ? "" : ReasonReact.element(undefined, undefined, MaterialUIIcons.Alarm[/* make */0](/* array */[]))]))]));
             }),
           /* initialState */(function () {
               return /* record */[
