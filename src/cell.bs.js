@@ -45,7 +45,19 @@ var cellButton = Css.style(/* :: */[
       Css.width(Css.pct(100.0)),
       /* :: */[
         Css.height(Css.pct(100.0)),
-        /* [] */0
+        /* :: */[
+          Css.border(Css.zero, /* none */-922086728, Css.white),
+          /* :: */[
+            Css.hover(/* :: */[
+                  Css.backgroundColor(Css.hex("dfdfdf")),
+                  /* [] */0
+                ]),
+            /* :: */[
+              Css.cursor(/* pointer */-786317123),
+              /* [] */0
+            ]
+          ]
+        ]
       ]
     ]);
 

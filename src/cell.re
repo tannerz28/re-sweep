@@ -33,7 +33,13 @@ let cellPaper =
   ]);
 
 let cellButton =
-  Css.style([Css.width(Css.pct(100.0)), Css.height(Css.pct(100.0))]);
+  Css.style([
+    Css.width(Css.pct(100.0)),
+    Css.height(Css.pct(100.0)),
+    Css.border(Css.zero, `none, Css.white),
+    Css.hover([Css.backgroundColor(Css.hex("dfdfdf"))]),
+    Css.cursor(`pointer),
+  ]);
 
 let component = ReasonReact.reducerComponent("Cell");
 
